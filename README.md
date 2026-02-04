@@ -1,8 +1,8 @@
-### Go Cluster
+# Go Cluster
 
-Framework for event-driven architecture, on very early stage
+Framework for the event-driven architecture.  It is at a very early stage, so it can be unstable.
 
-# Disclaimer
+### Disclaimer
 
 This project is in very early stage currently, some specifications can be changed in future, library totally need to grow and contain much more adapters (first of all, Kafka, Rabbit, Redis and NATS) and tests. I have some huge plans about it, i hope i will have enough time to implement it
 
@@ -12,20 +12,20 @@ And sorry for my very very bad english, yeah...
 
 P.S. Even this README isn't complete yet, it's just a scratch
 
-# Motivation
+### Motivation
 
 Event-driven systems are popular, very popular to be honest. But as long as there is some understanding about outer design of event-driven systems, inner microservice implementation commonly builds in a shitty imperative style. Why? Because actually there is no strict interface which will describe inner event processing. Many projects have some entry point from which a lot of different calls processed, with no clear pipeline and a lot of methods, that call other methods, that call some other methods and e.t.c. 
 
 The main goal of this package is to provide simplified interfaces to configure consecutive pipelines instead of complicated dependecies. I want to make it easier to switch brokers/outer receivers without refactoring inner code itself. Event-driven system should be easier to design in my opinion.
 
-# Basic info
+### Basic info
 
 There are two main entities, which process events/messages
 
 1) Streams of events (pub/sub): guaranty at most once, pub don't know anything about subs (even their existence) and never waits for them. In other words, sender leads flow.
 2) Sequences of messages (producer/consumer): guaranty at least once, producer (it can be an outer queue itself) waits for consumer to do it work and never skips updates. In other words, receiver leads flow.
 
-# Streams of events
+### Streams of events
 
 ```go
 type Stream[T any] interface {
@@ -44,7 +44,7 @@ func (p EventPipe[In, Out]) MapSub(startupCtx context.Context, sub Sub[Out]) (Su
 
 ```
 
-# Sequences of messages
+### Sequences of messages
 
 ```go
 type CustomProducer[T any] interface {

@@ -276,10 +276,7 @@ type Msg[T any] = CustomMsg[*Header, T]
 type Header struct {
 	NewState uint64 // new state
 
-	Source struct {
-		Start uint64
-		End   uint64
-	}
+	Source HeaderSource // indexes of sources messages
 
 	SequenceId *SequenceId // identifier of the message sequence
 }

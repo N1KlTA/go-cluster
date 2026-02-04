@@ -7,6 +7,7 @@ import (
 	"github.com/N1KlTA/go-cluster"
 )
 
+// This is a scratch implementation, it will be rewrited later
 func RecoverMsgsAfter[T, PipeOut any](subpipe cluster.MsgPipe[T, PipeOut]) cluster.MsgPipe[T, T] {
 	headerManager := cluster.NewHeaderManager[cluster.Msg[T]](true)
 	return func(startupCtx context.Context, consumer cluster.MsgConsumer[T]) (cluster.MsgConsumer[T], error) {
