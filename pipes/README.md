@@ -1,6 +1,6 @@
-### Go Cluster Pipes
+# Go Cluster Pipes
 
-# Introduction
+### Introduction
 
 Package contain some predefined pipes to implement function style adapters and other manipulations with cluster.EventPipe and cluster.MsgPipe
 
@@ -10,7 +10,7 @@ Event pipes don't use errors, if you want to log some - you need to do it inside
 
 All timeouts, retries and other configurations should be incapsulated in function
 
-# Default (instant) pipes
+### Default (instant) pipes
 
 Should be used ONLY if you want to apply non-blocking transformations
 
@@ -22,7 +22,7 @@ There are 4 possible kinds of transformation:
 
 Probably there is no point to describe functionality - it's pretty obvious
 
-# Async pipes
+### Async pipes
 
 Async pipes transform "Task" entity instead of doing real work. Execution is a separate pipeline, which can be configured with AsyncExecutorConfig. So before and after async work you should use this pipes:
 - AsyncPrepare (T -> Task[T]): wrap data in Task
@@ -36,7 +36,7 @@ Async pipes have common signatures:
 - AsyncFilter (Task[T] -> Task[T]): append filtering to task
 - AsyncForEach (Task[T] -> Task[T]): append call to task
 
-# Sync pipes
+### Sync pipes
 
 Sync pipes process data in a single thread. To avoid slowing down by this, sync pipes should be configured with some batching and splitting afterwards (if needed):
 - Batch (T -> []T): batch new data and forward it once in a SendTimeout
@@ -50,7 +50,7 @@ Sync pipes have common signatures:
 - Filter (T -> (T, ok))
 - ForEach (T -> T)
 
-# Other
+### Other
 
 - Broken pipes: return configured error on any usage try
 - Recover message pipe: will run a subpipe, but forward original message on subpipe success or subpipe error on error
