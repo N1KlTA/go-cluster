@@ -299,6 +299,10 @@ func (id *SequenceId) String() string {
 	return fmt.Sprintf("%v;%v", id.ProducerId, id.SessionId)
 }
 
+func NewHeaderManager[ActualHeader any](allowParallelSessions bool) HeaderManager[ActualHeader] {
+	return newHeaderManager[ActualHeader](allowParallelSessions)
+}
+
 type HeaderManager[ActualHeader any] interface {
 	NewSession() (HeaderManagerSession[ActualHeader], error)
 	GetSource(header *Header) ([]ActualHeader, error)
@@ -325,8 +329,4 @@ type HeaderManagerSession[ActualHeader any] interface {
 	GetSequenceID() *SequenceId
 	Close(closeFunc func(header []ActualHeader) error) error
 	IsClosed() bool
-}
-
-func NewHeaderManager[ActualHeader any](allowParallelSessions bool) HeaderManager[ActualHeader] {
-	return newHeaderManager[ActualHeader](allowParallelSessions)
 }

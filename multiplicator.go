@@ -95,10 +95,12 @@ func (r *multiplicatorStream[T]) Subscribe(ctx context.Context, output Sub[T]) (
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if r.closed {
+		output.Close(CauseCanceled)
 		return func() {}, ErrMStreamClosed
 	}
 	core := r.core.get()
 	if core.size() == MultiplicatorReceiversLimit {
+		output.Close(CauseCanceled)
 		return func() {}, ErrMStreamSubLimitExceeded
 	}
 	newKey := core.nextAvailableKey(r.nextKey)
