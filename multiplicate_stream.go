@@ -30,11 +30,13 @@ func (s *multiplicatedStream[T]) Subscribe(ctx context.Context, sub Sub[T]) (con
 	defer s.mu.Unlock()
 	if s.currentMultiplicator == nil {
 		if err := s.start(ctx); err != nil {
+			sub.Close(CauseCanceled)
 			return NilCancel, err
 		}
 	}
 	localStop, err := s.currentMultiplicator.AsStream().Subscribe(ctx, sub)
 	if err != nil {
+		sub.Close(CauseCanceled)
 		return NilCancel, err
 	}
 	actualStop := func() {

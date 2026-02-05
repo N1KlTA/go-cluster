@@ -7,14 +7,13 @@ import "context"
 // There is no other solution
 
 func Concat2EventPipes[In, Mid, Out any](first EventPipe[In, Mid], second EventPipe[Mid, Out]) EventPipe[In, Out] {
-	return EventPipe[In, Out](func(startupCtx context.Context, sub Sub[Out]) (Sub[In], error) {
-		midSub, err := second(startupCtx, sub)
+	return func(startupCtx context.Context, sub Sub[Out]) (Sub[In], error) {
+		midSub, err := second.MapSub(startupCtx, sub)
 		if err != nil {
-			midSub.Close(CauseCanceled)
 			return nil, err
 		}
-		return first(startupCtx, midSub)
-	})
+		return first.MapSub(startupCtx, midSub)
+	}
 }
 func Concat3EventPipes[T1, T2, T3, T4 any](p1 EventPipe[T1, T2], p2 EventPipe[T2, T3], p3 EventPipe[T3, T4]) EventPipe[T1, T4] {
 	return func(startupCtx context.Context, sub Sub[T4]) (Sub[T1], error) {
